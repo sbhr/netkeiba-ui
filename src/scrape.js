@@ -13,7 +13,9 @@ const makeBloodUrl = (horseUrl) => {
 client.fetch(url, (err, $) => {
   raceData.index = delNL(delNL($('.racedata dt').text()));
   raceData.name = $('.racedata dd h1').text();
-  raceData.config = $('.racedata dd p span').text();
+  const status = $('.racedata dd p span').text();
+  raceData.type = status.slice(0, status.indexOf('m')).slice(0, 1);
+  raceData.distance = status.slice(0, status.indexOf('m')).slice(1);
   raceData.horses = [];
   for (let i = 0; i < $('.shutuba_table tr').length - 1; i += 1) {
     raceData.horses.push({});
