@@ -1,21 +1,54 @@
 const client = require('cheerio-httpcli');
 const fs = require('fs');
 
-const url = 'http://race.netkeiba.com/?pid=race&id=p201705010611&mode=shutuba';
 const raceData = {};
 
 const delNL = str => str.replace('\n', '');
+
+const setRaceDate = (objToday) => {
+  if (objToday.getDay() !== 6) {
+    if (objToday.getDay() > 0) {
+      objToday.setDate(objToday.getDate() + 1);
+    } else {
+      objToday.setDate(objToday.getDate() - 1);
+    }
+    setRaceDate(objToday);
+  }
+};
+
+const getRaceDate = (objDate) => {
+  setRaceDate(objDate);
+  const mm = `0${(objDate.getMonth() + 1)}`.slice(-2);
+  const dd1 = `0${objDate.getDate()}`.slice(-2);
+  objDate.setDate(objDate.getDate() + 1);
+  const dd2 = `0${objDate.getDate()}`.slice(-2);
+  return [mm + dd1, mm + dd2];
+};
+
 const makeBloodUrl = (horseUrl) => {
   const index = horseUrl.lastIndexOf('/', horseUrl.lastIndexOf('/') - 1) + 1;
   return `${horseUrl.slice(0, index)}ped/${horseUrl.slice(index + Math.abs(0))}`;
 };
 
-const scrapeShutubaTable = (url) => {
-  client.fetch(url, (err, $) => {
+const makeShutubaUrl = raceUrlPath => `http://race.netkeiba.com${raceUrlPath.replace('_old', '')}`;
+
+const getShutubaUrl = (raceUrl) => {
+  const retArray = [];
+  const ret = client.fetchSync(raceUrl);
+  // console.log('fetchSync getShutubaUrl');
+  ret.$('#race_list_body .race_top_hold_list .racename a').each((idx, elem) => {
+    retArray.push(makeShutubaUrl(elem.attribs.href).replace('top', 'shutuba'));
+  });
+  return retArray;
+};
+
+const scrapeShutubaTable = (shutubaUrl) => {
+  client.fetch(shutubaUrl, (err, $) => {
+    // console.log(`fetch scrapeShutubaTable ${shutubaUrl}`);
     const place = $('.race_place .active').text();
-    raceData[place] = raceData.hasOwnProperty(place) ? raceData[place] : [];
+    raceData[place] = Object.prototype.hasOwnProperty.call(raceData, place) ? raceData[place] : [];
     const race = {};
-    race.index = delNL(delNL($('.racedata dt').text())).replace('R','');
+    race.index = delNL(delNL($('.racedata dt').text())).replace('R', '');
     race.name = $('.racedata dd h1').text();
     const status = $('.racedata dd p span').text();
     race.type = status.slice(0, status.indexOf('m')).slice(0, 1);
@@ -43,10 +76,15 @@ const scrapeShutubaTable = (url) => {
       race.horses[index].name = elem.firstChild.data;
       const bloodUrl = makeBloodUrl(elem.attribs.href);
       const ret = client.fetchSync(bloodUrl);
+      // console.log(`fetchSync blood ${bloodUrl}`);
       ret.$('.blood_table td a').each((i, element) => {
-        const horseName = element.children[0].data;
-        if (horseName !== '産駒' && horseName !== '血統' && horseName !== undefined) {
-          race.horses[index].blood.detail.push(delNL(delNL(horseName)));
+        try {
+          const horseName = element.children[0].data;
+          if (horseName !== '産駒' && horseName !== '血統' && horseName !== undefined) {
+            race.horses[index].blood.detail.push(delNL(delNL(horseName)));
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     });
@@ -55,4 +93,12 @@ const scrapeShutubaTable = (url) => {
   });
 };
 
-scrapeShutubaTable(url);
+const raceDate = getRaceDate(new Date());
+for (let i = 0; i < raceDate.length; i += 1) {
+  const shutubaUrls = getShutubaUrl(`http://race.netkeiba.com/?pid=race_list&id=c${raceDate[i]}`);
+  for (let j = 0; j < shutubaUrls.length; j += 1) {
+    scrapeShutubaTable(shutubaUrls[j]);
+    // console.log('j end');
+  }
+  // console.log('i end');
+}
