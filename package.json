@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/sbhr/netkeiba-scrape#readme",
   "dependencies": {
-    "cheerio-httpcli": "^0.6.11"
+    "cheerio-httpcli": "^0.6.11",
+    "config": "^1.25.1",
+    "mongoose": "^4.8.4"
   },
   "devDependencies": {
     "eslint": "^3.15.0",
