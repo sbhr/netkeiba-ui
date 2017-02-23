@@ -2,6 +2,7 @@ const client = require('cheerio-httpcli');
 const fs = require('fs');
 
 const raceData = {};
+const outputFile;
 
 const delNL = str => str.replace('\n', '');
 
@@ -22,6 +23,7 @@ const getRaceDate = (objDate) => {
   const dd1 = `0${objDate.getDate()}`.slice(-2);
   objDate.setDate(objDate.getDate() + 1);
   const dd2 = `0${objDate.getDate()}`.slice(-2);
+  outputFile = `raceData_${mm}${dd1}_${mm}${dd2}.json`;
   return [mm + dd1, mm + dd2];
 };
 
@@ -89,7 +91,7 @@ const scrapeShutubaTable = (shutubaUrl) => {
       });
     });
     raceData[place].push(race);
-    fs.writeFile('data.json', JSON.stringify(raceData, null, 2));
+    fs.writeFile(outputFile, JSON.stringify(raceData, null, 2));
   });
 };
 
