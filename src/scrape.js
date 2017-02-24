@@ -1,6 +1,7 @@
 const client = require('cheerio-httpcli');
 const fs = require('fs');
-const db = require('./db.js');
+const db = require('./db');
+const logger = require('./logger');
 
 const raceData = {};
 let outputFile = '';
@@ -46,7 +47,7 @@ const makeShutubaUrl = raceUrlPath => `http://race.netkeiba.com${raceUrlPath.rep
 const getShutubaUrl = (raceUrl) => {
   const retArray = [];
   const ret = client.fetchSync(raceUrl);
-  // console.log('fetchSync getShutubaUrl');
+  logger.scrape.info('fetchSync getShutubaUrl');
   ret.$('#race_list_body .race_top_hold_list .racename a').each((idx, elem) => {
     retArray.push(makeShutubaUrl(elem.attribs.href).replace('top', 'shutuba'));
   });
@@ -55,7 +56,7 @@ const getShutubaUrl = (raceUrl) => {
 
 const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
   client.fetch(shutubaUrl, (err, $) => {
-    // console.log(`fetch scrapeShutubaTable ${shutubaUrl}`);
+    logger.scrape.info(`fetch scrapeShutubaTable ${shutubaUrl}`);
     const racePlace = $('.race_place .active').text();
     raceData[racePlace] = Object.prototype.hasOwnProperty.call(raceData, racePlace) ? raceData[racePlace] : [];
     const race = {};
@@ -87,7 +88,7 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
       race.horses[idx].name = elem.firstChild.data;
       const bloodUrl = makeBloodUrl(elem.attribs.href);
       const ret = client.fetchSync(bloodUrl);
-      // console.log(`fetchSync blood ${bloodUrl}`);
+      logger.scrape.info(`fetchSync blood ${bloodUrl}`);
       ret.$('.blood_table td a').each((i, element) => {
         try {
           const horseName = element.children[0].data;
@@ -95,7 +96,7 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
             race.horses[idx].blood.detail.push(delNL(delNL(horseName)));
           }
         } catch (e) {
-          console.log(e);
+          logger.error.error(e);
         }
       });
     });
@@ -116,7 +117,5 @@ for (let i = 0; i < raceDates.length; i += 1) {
   const shutubaUrls = getShutubaUrl(`http://race.netkeiba.com/?pid=race_list&id=c${raceDates[i]}`);
   for (let j = 0; j < shutubaUrls.length; j += 1) {
     scrapeShutubaTable(shutubaUrls[j], i);
-    // console.log('j end');
   }
-  // console.log('i end');
 }
