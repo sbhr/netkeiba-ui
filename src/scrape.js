@@ -101,12 +101,16 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
       });
     });
     const raceDatesStr = getRaceDate(new Date());
-    db.insert({
-      date: raceDatesStr[idxOfDay],
-      place: racePlace,
-      num: race.num,
-      data: race,
-    });
+    try {
+      db.insert({
+        date: raceDatesStr[idxOfDay],
+        place: racePlace,
+        num: race.num,
+        data: race,
+      });
+    } catch (e) {
+      logger.error.error(e);
+    }
     raceData[racePlace].push(race);
     fs.writeFile(outputFile, JSON.stringify(raceData, null, 2));
   });
