@@ -42,7 +42,14 @@ const makeBloodUrl = (horseUrl) => {
   return `${horseUrl.slice(0, index)}ped/${horseUrl.slice(index + Math.abs(0))}`;
 };
 
-const makeShutubaUrl = raceUrlPath => `http://race.netkeiba.com${raceUrlPath.replace('_old', '')}`;
+const makeShutubaUrl = (raceUrlPath) => {
+  let shutubaUrl = `http://race.netkeiba.com${raceUrlPath.replace('_old', '')}`;
+  const idx = shutubaUrl.indexOf('&mode');
+  if (idx > 0) {
+    shutubaUrl = shutubaUrl.substring(0, shutubaUrl.indexOf('&mode'));
+  }
+  return `${shutubaUrl}&mode=shutuba`;
+};
 
 const getShutubaUrl = (raceUrl) => {
   const retArray = [];
