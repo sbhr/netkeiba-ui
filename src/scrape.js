@@ -66,7 +66,8 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
 
   logger.scrape.info(`fetch scrapeShutubaTable ${shutubaUrl}`);
   const racePlace = shutubaData.$('.race_place .active').text();
-  raceData[racePlace] = Object.prototype.hasOwnProperty.call(raceData, racePlace) ? raceData[racePlace] : [];
+  raceData[racePlace] =
+    Object.prototype.hasOwnProperty.call(raceData, racePlace) ? raceData[racePlace] : [];
   const race = {};
   race.num = delNL(delNL(shutubaData.$('.racedata dt').text())).replace('R', '');
   race.name = shutubaData.$('.racedata dd h1').text();

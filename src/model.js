@@ -18,8 +18,8 @@ mongoose.connect(`mongodb://${HOST}:${PORT}/${DATABASE}`, {
   server: {
     socketOptions: {
       socketTimeoutMS: 0,
-      connectionTimeout: 0
-    }
-  }
+      connectionTimeout: 0,
+    },
+  },
 });
 exports.Race = mongoose.model('Race', RaceSchema);

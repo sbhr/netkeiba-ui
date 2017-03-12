@@ -17,7 +17,7 @@ log4js.configure({
       pattern: '-yyyy-MM-dd',
     },
     {
-      type: "console"
+      type: 'console',
     },
   ],
 });
