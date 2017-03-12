@@ -16,6 +16,9 @@ log4js.configure({
       filename: './logs/error.log',
       pattern: '-yyyy-MM-dd',
     },
+    {
+      type: "console"
+    },
   ],
 });
 

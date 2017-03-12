@@ -14,5 +14,12 @@ const HOST = config.get('db.host');
 const PORT = config.get('db.port');
 const DATABASE = config.get('db.name');
 
-mongoose.connect(`mongodb://${HOST}:${PORT}/${DATABASE}`);
+mongoose.connect(`mongodb://${HOST}:${PORT}/${DATABASE}`, {
+  server: {
+    socketOptions: {
+      socketTimeoutMS: 0,
+      connectionTimeout: 0
+    }
+  }
+});
 exports.Race = mongoose.model('Race', RaceSchema);
