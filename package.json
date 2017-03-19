@@ -22,7 +22,7 @@
     "cheerio-httpcli": "^0.6.11",
     "config": "^1.25.1",
     "log4js": "^1.1.0",
-    "mongoose": "^4.8.4"
+    "mongoose": "^4.9.0"
   },
   "devDependencies": {
     "eslint": "^3.15.0",

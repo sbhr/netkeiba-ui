@@ -1,10 +1,9 @@
 const client = require('cheerio-httpcli');
-const fs = require('fs');
-const db = require('./db');
 const logger = require('./logger');
+const MongoClient = require('./mongo-client');
 
-const raceData = {};
-let outputFile = '';
+const mongoClient = new MongoClient();
+const raceArray = [];
 
 const delNL = str => str.replace('\n', '');
 
@@ -33,7 +32,6 @@ const getRaceDateForUrl = (objDate) => {
   const dd1 = `0${objDate.getDate()}`.slice(-2);
   objDate.setDate(objDate.getDate() + 1);
   const dd2 = `0${objDate.getDate()}`.slice(-2);
-  outputFile = `raceData_${mm}${dd1}_${mm}${dd2}.json`;
   return [mm + dd1, mm + dd2];
 };
 
@@ -66,8 +64,6 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
 
   logger.scrape.info(`fetch scrapeShutubaTable ${shutubaUrl}`);
   const racePlace = shutubaData.$('.race_place .active').text();
-  raceData[racePlace] =
-    Object.prototype.hasOwnProperty.call(raceData, racePlace) ? raceData[racePlace] : [];
   const race = {};
   race.num = delNL(delNL(shutubaData.$('.racedata dt').text())).replace('R', '');
   race.name = shutubaData.$('.racedata dd h1').text();
@@ -110,18 +106,13 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
     });
   });
   const raceDatesStr = getRaceDate(new Date());
-  try {
-    db.insert({
-      date: raceDatesStr[idxOfDay],
-      place: racePlace,
-      num: race.num,
-      data: race,
-    });
-  } catch (e) {
-    logger.error.error(e);
-  }
-  raceData[racePlace].push(race);
-  fs.writeFile(outputFile, JSON.stringify(raceData, null, 2));
+  const insObj = {
+    date: raceDatesStr[idxOfDay],
+    place: racePlace,
+    num: race.num,
+    data: race,
+  };
+  raceArray.push(insObj);
 };
 
 const raceDates = getRaceDateForUrl(new Date());
@@ -131,3 +122,4 @@ for (let i = 0; i < raceDates.length; i += 1) {
     scrapeShutubaTable(shutubaUrls[j], i);
   }
 }
+mongoClient.insert(raceArray);
