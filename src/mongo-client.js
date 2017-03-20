@@ -42,10 +42,13 @@ class MongoClient {
           });
           race.save((error) => {
             if (error) logger.error.error(error);
+            if (i === raceDatas.length - 1){
+              // TODO: 今のところ全部入っているが、
+              // 遅延や量によって入らなそう(要改善)
+              mongoose.disconnect();
+            }
           });
         }
-        // console.log('end');
-        // mongoose.disconnect();
       }
     });
   }
