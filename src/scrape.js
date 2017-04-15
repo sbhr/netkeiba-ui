@@ -1,6 +1,6 @@
 const client = require('cheerio-httpcli');
-const Logger = require('./logger');
-const MongoClient = require('./mongo-client');
+const Logger = require('../lib/logger');
+const MongoClient = require('../lib/mongo-client');
 
 const mongoClient = new MongoClient();
 const raceArray = [];
