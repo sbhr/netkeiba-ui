@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/*.js",
-    "scrape": "node src/scrape.js"
+    "scrape": "node src/scrape.js",
+    "start": "node ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -19,10 +21,17 @@
   },
   "homepage": "https://github.com/sbhr/netkeiba-scrape#readme",
   "dependencies": {
+    "body-parser": "~1.17.1",
     "cheerio-httpcli": "^0.6.11",
     "config": "^1.25.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
     "log4js": "^1.1.0",
-    "mongoose": "^4.9.0"
+    "mongoose": "^4.9.0",
+    "morgan": "~1.8.1",
+    "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
     "eslint": "^3.15.0",
