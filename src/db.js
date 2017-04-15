@@ -1,5 +1,5 @@
 const model = require('./model');
-const logger = require('./logger');
+const Logger = require('./logger');
 
 const insert = (raceData) => {
   const Race = model.Race;
@@ -11,7 +11,7 @@ const insert = (raceData) => {
   });
 
   race.save((err) => {
-    if (err) { logger.error.error(err); }
+    if (err) { Logger.errorLog('error', err.message); }
   });
 };
 

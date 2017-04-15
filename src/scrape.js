@@ -1,5 +1,5 @@
 const client = require('cheerio-httpcli');
-const logger = require('./logger');
+const Logger = require('./logger');
 const MongoClient = require('./mongo-client');
 
 const mongoClient = new MongoClient();
@@ -52,7 +52,7 @@ const makeShutubaUrl = (raceUrlPath) => {
 const getShutubaUrl = (raceUrl) => {
   const retArray = [];
   const ret = client.fetchSync(raceUrl);
-  logger.scrape.info('fetchSync getShutubaUrl');
+  Logger.scrapeLog('info', 'fetchSync getShutubaUrl');
   ret.$('#race_list_body .race_top_hold_list .racename a').each((idx, elem) => {
     retArray.push(makeShutubaUrl(elem.attribs.href).replace('top', 'shutuba'));
   });
@@ -62,7 +62,7 @@ const getShutubaUrl = (raceUrl) => {
 const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
   const shutubaData = client.fetchSync(shutubaUrl);
 
-  logger.scrape.info(`fetch scrapeShutubaTable ${shutubaUrl}`);
+  Logger.scrapeLog('info', `fetch scrapeShutubaTable ${shutubaUrl}`);
   const racePlace = shutubaData.$('.race_place .active').text();
   const race = {};
   race.num = delNL(delNL(shutubaData.$('.racedata dt').text())).replace('R', '');
@@ -93,7 +93,7 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
     race.horses[idx].name = elem.firstChild.data;
     const bloodUrl = makeBloodUrl(elem.attribs.href);
     const ret = client.fetchSync(bloodUrl);
-    logger.scrape.info(`fetchSync blood ${bloodUrl}`);
+    Logger.scrapeLog('info', `fetchSync blood ${bloodUrl}`);
     ret.$('.blood_table td a').each((i, element) => {
       try {
         const horseName = element.children[0].data;
@@ -101,7 +101,7 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
           race.horses[idx].blood.detail.push(delNL(delNL(horseName)));
         }
       } catch (e) {
-        logger.error.error(e);
+        Logger.errorLog('error', e.message);
       }
     });
   });

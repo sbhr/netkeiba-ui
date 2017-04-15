@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('config');
-const logger = require('./logger');
+const Logger = require('./logger');
 
 const RaceSchema = new mongoose.Schema({
   date: Date,
@@ -10,11 +10,11 @@ const RaceSchema = new mongoose.Schema({
 });
 
 mongoose.connection.on('open', () => {
-  logger.scrape.info('Connected to mongo server.');
+  Logger.scrapeLog('info', 'Connected to mongo server.');
 });
 mongoose.connection.on('error', (err) => {
-  logger.error.error('Could not connect to mongo server!');
-  logger.error.error(err);
+  Logger.errorLog('error', 'Could not connect to mongo server!');
+  Logger.errorLog('error', err,message);
 });
 
 class MongoClient {
@@ -31,7 +31,7 @@ class MongoClient {
   insert(raceDatas) {
     mongoose.connect(this.uri, (err) => {
       if (err) {
-        logger.error.error(err);
+        Logger.errorLog('error', err.message);
       } else {
         for (let i = 0; i < raceDatas.length; i += 1) {
           const race = new this.Model({
@@ -41,7 +41,7 @@ class MongoClient {
             data: raceDatas[i].data,
           });
           race.save((error) => {
-            if (error) logger.error.error(error);
+            if (error) Logger.errorLog('error', error.message);
             if (i === raceDatas.length - 1) {
               // TODO: 今のところ全部入っているが、
               // 遅延や量によって入らなそう(要改善)
