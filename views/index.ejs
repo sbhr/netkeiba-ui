@@ -2,15 +2,31 @@
 <html lang ="ja">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/riot/3.2/riot+compiler.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <title><%=title %></title>
   </head>
 
   <body>
-    <header>
-      <h1><%=title %></h1>
-    </header>
-    <div role="main">
-      <%-content %>
-    </div>
+    <header></header>
+    <script type="riot/tag" src="tags/header.tag"></script>
+    <section class="section">
+      <main class="container">
+        <div class="columns">
+          <div class="column is-2">
+            <side-nav></side-nav>
+            <script type="riot/tag" src="tags/side-nav.tag"></script>
+          </div>
+          <div class="column">
+        test
+          </div>
+        </div>
+      </main>
+    </section>
+    <script>
+      riot.mount('header');
+      riot.mount('side-nav', { raceDates: '<%= raceDates %>' });
+    </script>
   </body>
 </html>
