@@ -26,7 +26,7 @@
     </tfoot>
     <tbody>
       <tr each={ raceData, i in raceDatas } class={ is-selected: parent.raceSelectedId === raceData.num } onclick={ setHorseData.bind(this) }>
-        <td>{ raceData.num }</td>
+        <th>{ raceData.num }</th>
         <td>{ raceData.type }</td>
         <td>{ raceData.distance }</td>
         <td>{ raceData.name }</td>
