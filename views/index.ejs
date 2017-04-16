@@ -16,8 +16,8 @@
       <main class="container">
         <div class="columns">
           <div class="column is-2">
-            <side-nav></side-nav>
-            <script type="riot/tag" src="tags/side-nav.tag"></script>
+            <side-menu></side-menu>
+            <script type="riot/tag" src="tags/side-menu.tag"></script>
           </div>
           <div class="column">
             <race-data></race-data>
@@ -29,7 +29,7 @@
     <script>
       var obs = riot.observable();
       riot.mount('header');
-      riot.mount('side-nav', { raceDates: '<%= raceDates %>' });
+      riot.mount('side-menu', { raceDates: '<%= raceDates %>' });
       riot.mount('race-data');
     </script>
   </body>
