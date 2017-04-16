@@ -15,6 +15,16 @@ const getIndex = (req, res, next) => {
   .catch((err) => next(err));
 };
 
+const getRaceData = (req, res, next) => {
+  const raceDate = req.params.date;
+  mongoClient.getRaceDataByDate(raceDate)
+  .then((ret) => {
+    res.send(ret);
+  })
+  .catch((err) => next(err));
+};
+
 module.exports = {
   getIndex,
+  getRaceData,
 };

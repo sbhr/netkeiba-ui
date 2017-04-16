@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
     <script src="https://cdn.jsdelivr.net/riot/3.2/riot+compiler.min.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <title><%=title %></title>
   </head>
 
@@ -19,14 +20,17 @@
             <script type="riot/tag" src="tags/side-nav.tag"></script>
           </div>
           <div class="column">
-        test
+            <race-data></race-data>
+            <script type="riot/tag" src="tags/race-data.tag"></script>
           </div>
         </div>
       </main>
     </section>
     <script>
+      var obs = riot.observable();
       riot.mount('header');
       riot.mount('side-nav', { raceDates: '<%= raceDates %>' });
+      riot.mount('race-data');
     </script>
   </body>
 </html>
