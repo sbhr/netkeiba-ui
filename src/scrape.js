@@ -122,4 +122,4 @@ for (let i = 0; i < raceDates.length; i += 1) {
     scrapeShutubaTable(shutubaUrls[j], i);
   }
 }
-mongoClient.insert(raceArray);
+mongoClient.insertRaceDatas(raceArray);
