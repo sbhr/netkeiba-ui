@@ -20,6 +20,8 @@
             <script type="riot/tag" src="tags/side-menu.tag"></script>
           </div>
           <div class="column">
+            <place-tab></place-tab>
+            <script type="riot/tag" src="tags/place-tab.tag"></script>
             <race-data></race-data>
             <script type="riot/tag" src="tags/race-data.tag"></script>
           </div>
@@ -30,6 +32,7 @@
       var obs = riot.observable();
       riot.mount('header');
       riot.mount('side-menu', { raceDates: '<%= raceDates %>' });
+      riot.mount('place-tab');
       riot.mount('race-data');
     </script>
   </body>

@@ -3,7 +3,7 @@
     <p class="menu-label">Race Date</p>
     <ul class="menu-list">
       <li each={ date, i in raceDates }>
-        <a class={ is-active: parent.selectedMenu === date } onclick={ getRaceData }>{ date }</a>
+        <a class={ is-active: parent.selectedMenu === date } onclick={ getRaceDatas }>{ date }</a>
       </li>
     </ul>
   </aside>
@@ -11,7 +11,7 @@
     this.raceDates = opts.raceDates.split(',');
   </script>
   <script>
-    getRaceData(e) {
+    getRaceDatas(e) {
       var path = "/data/" + e.item.date;
       this.selectedMenu = e.item.date;
       $.ajax({
