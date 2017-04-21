@@ -38,11 +38,18 @@
     this.placeSelected = false;
     const self = this;
     obs.on('setPlaceData', function(e, datas) {
-      self.placeSelected = true;
       self.datas = datas;
       self.selectedId = e.item.place;
       self.raceDatas = self.datas.filter(x => x.place === self.selectedId).map(x => x.data[0]);
       self.raceDatas.sort((a, b) => a.num - b.num);
+      self.update();
+    });
+    obs.on('setPlaceSelected', function() {
+      self.placeSelected = true;
+      self.update();
+    });
+    obs.on('unsetPlaceSelected', function() {
+      self.placeSelected = false;
       self.update();
     });
   </script>

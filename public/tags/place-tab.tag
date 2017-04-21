@@ -1,5 +1,4 @@
 <place-tab>
-  <h5 show={ !dateSlected } class="h5">日付を選択してください</h5>
   <div show={ dateSlected } class="tabs is-centered">
     <ul>
       <li each={ place,i in places } class={ is-active: parent.selectedId === place}><a onclick={ setPlaceData }>{ place }</a></li>
@@ -8,8 +7,15 @@
   <script type="es6">
     this.dateSlected = false;
     const self = this;
-    obs.on('setRaceData', function(result) {
+    obs.on('setDateSelected', function() {
       self.dateSlected = true;
+      self.update();
+    });
+    obs.on('unsetDateSelected', function() {
+      self.dateSlected = false;
+      self.update();
+    });
+    obs.on('setRaceData', function(result) {
       self.places = Array.from(new Set(result.map(x => x.place)));
       self.datas = result;
       self.update();
