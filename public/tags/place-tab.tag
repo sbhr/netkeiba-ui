@@ -24,6 +24,7 @@
   <script>
     setPlaceData(e) {
       obs.trigger('setPlaceData', e, self.datas);
+      obs.trigger('setPlaceSelected');
     }
   </script>
 </place-tab>
