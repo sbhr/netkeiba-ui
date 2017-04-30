@@ -1,7 +1,7 @@
 <place-tab>
   <div show={ dateSlected } class="tabs is-centered">
     <ul>
-      <li each={ place,i in places } class={ is-active: parent.selectedId === place}><a onclick={ setPlaceData }>{ place }</a></li>
+      <li each={ place, i in places } class={ is-active: parent.selectedPlace === place }><a onclick={ setPlaceData.bind(this, place) }>{ place }</a></li>
     </ul>
   </div>
   <script type="es6">
@@ -22,7 +22,8 @@
     });
   </script>
   <script>
-    setPlaceData(e) {
+    setPlaceData(place, e) {
+      self.selectedPlace = place;
       obs.trigger('setPlaceData', e, self.datas);
       obs.trigger('setPlaceSelected');
     }
