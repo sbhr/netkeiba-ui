@@ -3,7 +3,6 @@ const Logger = require('../lib/logger');
 const MongoClient = require('../lib/mongo-client');
 const Util = require('../lib/util');
 
-const mongoClient = new MongoClient();
 const raceArray = [];
 
 const makeBloodUrl = (horseUrl) => {
@@ -36,6 +35,7 @@ const scrapeShutubaTable = (shutubaUrl, idxOfDay) => {
   Logger.scrapeLog('info', `fetch scrapeShutubaTable ${shutubaUrl}`);
   const racePlace = shutubaData.$('.race_place .active').text();
   const race = {};
+  race.place = racePlace;
   race.num = Util.deleteNewLine(Util.deleteNewLine(shutubaData.$('.racedata dt').text())).replace('R', '');
   race.name = shutubaData.$('.racedata dd h1').text();
   const status = shutubaData.$('.racedata dd p span').text();
@@ -93,4 +93,5 @@ for (let i = 0; i < raceDates.length; i += 1) {
     scrapeShutubaTable(shutubaUrls[j], i);
   }
 }
+const mongoClient = new MongoClient();
 mongoClient.insertRaceDatas(raceArray);
