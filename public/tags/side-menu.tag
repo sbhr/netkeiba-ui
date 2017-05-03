@@ -13,10 +13,12 @@
   </aside>
   <script type="es6">
     this.raceDates = opts.raceDates.split(',');
+    const self = this;
   </script>
   <script>
     getRaceDatas(e) {
-      var path = "/data/" + e.item.date;
+      self.resetMenu();
+      const path = `/data/${e.item.date}`;
       this.selectedMenu = e.item.date;
       $.ajax({
         url: path,
@@ -24,7 +26,8 @@
         success: function(result, textStatus, xhr) {
           obs.trigger('unsetSettingSelected');
           obs.trigger('setDateSelected');
-          obs.trigger('setRaceData', result);
+          obs.trigger('setPlaceTab', result);
+          parent.raceDatas = result;
           console.log("ok");
         },
         error: function(xhr, textStatus, error) {
@@ -32,11 +35,14 @@
         }
       });
     }
-    changeSettingMode(e) {
+    resetMenu() {
       obs.trigger('unsetDateSelected');
       obs.trigger('unsetPlaceSelected');
+      obs.trigger('unsetSelectedPlace');
+    }
+    changeSettingMode(e) {
+      self.resetMenu();
       obs.trigger('setSettingSelected');
-      obs.trigger('unset');
     }
   </script>
 </side-menu>

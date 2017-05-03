@@ -15,16 +15,19 @@
       self.dateSlected = false;
       self.update();
     });
-    obs.on('setRaceData', function(result) {
+    obs.on('setPlaceTab', function(result) {
       self.places = Array.from(new Set(result.map(x => x.place)));
-      self.datas = result;
+      self.update();
+    });
+    obs.on('unsetSelectedPlace', function() {
+      self.selectedPlace = false;
       self.update();
     });
   </script>
   <script>
     setPlaceData(place, e) {
       self.selectedPlace = place;
-      obs.trigger('setPlaceData', e, self.datas);
+      obs.trigger('setPlaceData', e);
       obs.trigger('setPlaceSelected');
     }
   </script>

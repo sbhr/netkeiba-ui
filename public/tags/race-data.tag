@@ -37,10 +37,10 @@
   <script type="es6">
     this.placeSelected = false;
     const self = this;
-    obs.on('setPlaceData', function(e, datas) {
-      self.datas = datas;
+    obs.on('setPlaceData', function(e) {
+      self.raceDatas = parent.raceDatas;
       self.selectedId = e.item.place;
-      self.raceDatas = self.datas.filter(x => x.place === self.selectedId).map(x => x.data[0]);
+      self.raceDatas = self.raceDatas.filter(x => x.place === self.selectedId).map(x => x.data[0]);
       self.raceDatas.sort((a, b) => a.num - b.num);
       self.update();
     });
@@ -51,6 +51,9 @@
     obs.on('unsetPlaceSelected', function() {
       self.placeSelected = false;
       self.update();
+    });
+    obs.on('setForecast', function(forecast) {
+      self.forecast = forecast;
     });
   </script>
   <script>
