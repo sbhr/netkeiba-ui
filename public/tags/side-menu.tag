@@ -29,11 +29,34 @@
           obs.trigger('setPlaceTab', result);
           parent.raceDatas = result;
           console.log("ok");
+          self.filterRaceDatas();
         },
         error: function(xhr, textStatus, error) {
           console.log("error");
         }
       });
+    }
+    filterRaceDatas() {
+      const path = "/filter";
+      const forecast = parent.forecast;
+      const postData = parent.raceDatas;
+      if (forecast) {
+        $.ajax({
+          url: path,
+          method: "POST",
+          data: {
+            forecast,
+            postData
+          },
+          success: function(result, textStatus, xhr) {
+            console.log("filterok");
+            parent.raceDatas = result;
+          },
+          error: function(xhr, textStatus, error) {
+            console.log("error");
+          }
+        });
+      }
     }
     resetMenu() {
       obs.trigger('unsetDateSelected');

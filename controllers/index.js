@@ -1,5 +1,6 @@
 const MongoClient = require('../lib/mongo-client');
 const Util = require('../lib/util');
+const Filter = require('../lib/filter');
 
 const mongoClient = new MongoClient();
 
@@ -24,7 +25,14 @@ const getRaceData = (req, res, next) => {
   .catch((err) => next(err));
 };
 
+const filterRaceDatas = (req, res, next) => {
+  const filter = new Filter(req.body.forecast, req.body.postData);
+  filter.applyFileter();
+  res.json(filter.raceDatas);
+};
+
 module.exports = {
   getIndex,
   getRaceData,
+  filterRaceDatas
 };

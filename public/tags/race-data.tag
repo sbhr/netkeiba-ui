@@ -27,7 +27,9 @@
         <td>
           <div show={ parent.raceSelectedId === raceData.num }>
             <ul>
-              <li each={ horse, i in raceData.horses}>{ horse.waku }枠{ horse.umaban }番: { horse.name }</li>
+              <li each={ horse, i in raceData.horses}>
+                { horse.waku }枠{ horse.umaban }番: { horse.name }<span class="tag is-danger" show={ horse.filtered }>Hit</span>
+              </li>
             <ul>
           </div>
         </td>
@@ -51,9 +53,6 @@
     obs.on('unsetPlaceSelected', function() {
       self.placeSelected = false;
       self.update();
-    });
-    obs.on('setForecast', function(forecast) {
-      self.forecast = forecast;
     });
   </script>
   <script>

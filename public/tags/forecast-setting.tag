@@ -27,9 +27,8 @@
   <script>
     submitForecast() {
       try {
-        self.forecast = JSON.parse(self.refs.forecast.value);
+        parent.forecast = JSON.parse(self.refs.forecast.value);
         self.isParseable = true;
-        obs.trigger('setForecast', self.forecast);
       } catch (e) {
         self.isParseable = false;
       }
