@@ -2,20 +2,14 @@
     "appenders": [
         {
             "type": "dateFile",
-            "category": "scrape",
-            "filename": "./logs/scrape.log",
+            "category": "server",
+            "filename": "./logs/server.log",
             "pattern": "-yyyy-MM-dd"
         },
         {
             "type": "dateFile",
             "category": "error",
             "filename": "./logs/error.log",
-            "pattern": "-yyyy-MM-dd"
-        },
-        {
-            "type": "dateFile",
-            "category": "server",
-            "filename": "./logs/server.log",
             "pattern": "-yyyy-MM-dd"
         },
         {
