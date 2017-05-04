@@ -1,5 +1,5 @@
 {
-  "name": "netkeiba-scrape",
+  "name": "netkeiba-ui",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,22 +7,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./*.js",
-    "scrape": "node src/scrape.js",
     "start": "node ./bin/www"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sbhr/netkeiba-scrape.git"
+    "url": "git+https://github.com/sbhr/netkeiba-ui.git"
   },
   "author": "sbhr",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sbhr/netkeiba-scrape/issues"
+    "url": "https://github.com/sbhr/netkeiba-ui/issues"
   },
-  "homepage": "https://github.com/sbhr/netkeiba-scrape#readme",
+  "homepage": "https://github.com/sbhr/netkeiba-ui#readme",
   "dependencies": {
     "body-parser": "~1.17.1",
-    "cheerio-httpcli": "^0.6.11",
     "config": "^1.25.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
